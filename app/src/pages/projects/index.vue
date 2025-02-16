@@ -1,50 +1,26 @@
 <script setup lang="ts">
-import {supabase} from "@/lib/supabaseClient.ts";
-import {h, type Ref, ref} from "vue";
-import type {Tables} from "@/types/database.types.ts";
-import type {ColumnDef} from "@tanstack/vue-table";
+import {type Ref, ref} from "vue";
 import DataTable from "@/components/ui/data-table/DataTable.vue";
-import {RouterLink} from "vue-router";
+import {usePageStore} from "@/stores/pages.ts";
+import {projectsQuery} from "@/lib/supabase/supabaseQueries.ts";
+import {columns} from "@/lib/table-columns/projectColumns.ts";
+import type {Projects} from "@/lib/supabase/supabaseQueryTypes.ts";
 
-const projects: Ref<Tables<'projects'>[] | null> = ref(null);
+usePageStore().pageData.title = 'Projects';
+const projects: Ref<Projects | null> = ref(null);
 
-(async () => {
-  const {data, error} = await supabase.from('projects').select();
+async function getAllProjects(){
+  const {data, error} = await projectsQuery;
 
   if (error) console.log(error);
   projects.value = data;
-})();
+}
+await getAllProjects();
 
-const column: ColumnDef<Tables<'projects'>>[] = [
-  {
-    accessorKey: "name",
-    header: () => h('div', {class: 'text-left'}, 'Name'),
-    cell: ({row}) => {
-      return h(RouterLink, {to: `/projects/${row.original.slug}`,
-          class: 'text-left font-medium hover:bg-muted block w-full'},
-        () => row.getValue('name'))
-    }
-  },
-  {
-    accessorKey: "status",
-    header: () => h('div', {class: 'text-left'}, 'Status'),
-    cell: ({row}) => {
-      return h('div', {class: 'text-left font-medium'}, row.getValue('status'))
-
-    }
-  }, {
-    accessorKey: "collaborators",
-    header: () => h('div', {class: 'text-left'}, 'Collaborators'),
-    cell: ({row}) => {
-      return h('div', {class: 'text-left font-medium'}, JSON.stringify(row.getValue('collaborators')))
-
-    }
-  },
-]
 </script>
 
 <template>
-  <DataTable v-if="projects" :columns="column" :data="projects"/>
+  <DataTable v-if="projects" :columns="columns" :data="projects"/>
 </template>
 
 <style scoped>

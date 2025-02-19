@@ -39,7 +39,11 @@ await getTask();
     </TableRow>
     <TableRow>
       <TableHead> Project </TableHead>
-      <TableCell> {{ task.projects?.name}} </TableCell>
+      <TableCell class="p-0">
+        <RouterLink class="w-full h-full hover:bg-muted block p-4" :to="`/projects/${task.projects?.slug}`">
+          {{ task.projects?.name}}
+        </RouterLink>
+      </TableCell>
     </TableRow>
     <TableRow>
       <TableHead> Status </TableHead>

@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import {useErrorStore} from "@/stores/error.ts";
 
+useErrorStore().setError({
+  error: 'Page not found',
+  customCode: 404
+})
 </script>
 
 <template>
-<h1>404 not found</h1>
+
 </template>
 
-<style scoped>
-
-</style>

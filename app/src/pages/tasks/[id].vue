@@ -7,6 +7,7 @@ import {useRoute} from "vue-router";
 import {TableCell, TableHead, TableRow} from "@/components/ui/table";
 import {Avatar} from "@/components/ui/avatar";
 import {Icon} from "@iconify/vue";
+import {useErrorStore} from "@/stores/errorStore.ts";
 
 const route = useRoute('/tasks/[id]');
 const task = ref<Task | null>(null);
@@ -16,7 +17,9 @@ watch(
 )
 
 async function getTask(){
-  const { data, error } = await taskQuery(+route.params.id);
+  const { data, error, status } = await taskQuery(+route.params.id);
+  if (error) useErrorStore().setError({error, customCode: status});
+
   task.value = data;
 }
 

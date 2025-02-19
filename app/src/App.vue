@@ -2,7 +2,7 @@
 import AuthLayout from "@/components/layout/main/AuthLayout.vue";
 import AppErrorPage from "@/components/AppError/AppErrorPage.vue";
 import {storeToRefs} from "pinia";
-import {useErrorStore} from "@/stores/error.ts";
+import {useErrorStore} from "@/stores/errorStore.ts";
 
 const {activeError} = storeToRefs(useErrorStore());
 

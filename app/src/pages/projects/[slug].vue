@@ -11,6 +11,7 @@ import {ref, watch} from "vue";
 import {projectQuery} from "@/lib/supabase/supabaseQueries.ts";
 import type {Project} from "@/lib/supabase/supabaseQueryTypes.ts";
 import {usePageStore} from "@/stores/pages.ts";
+import {useErrorStore} from "@/stores/errorStore.ts";
 
 const route = useRoute('/projects/[slug]');
 const project = ref<Project | null>(null);
@@ -23,7 +24,9 @@ watch(
 );
 
 const getProject = async () => {
-  const {data, error} = await projectQuery(route.params.slug)
+  const {data, error, status} = await projectQuery(route.params.slug)
+  if (error) useErrorStore().setError({error, customCode: status});
+
   project.value = data;
 }
 

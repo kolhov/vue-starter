@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useErrorStore} from "@/stores/error.ts";
+import {useErrorStore} from "@/stores/errorStore.ts";
 
 useErrorStore().setError({
   error: 'Page not found',

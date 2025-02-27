@@ -40,3 +40,27 @@ export const taskQuery = (id: number) => supabase
   .eq('id', id)
   .single();
 
+export const profileQuery = (id: string) => supabase
+  .from('profiles')
+  .select()
+  .eq('id', id)
+  .single();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

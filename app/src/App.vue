@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import AuthLayout from "@/components/layout/main/AuthLayout.vue";
 import AppErrorPage from "@/components/AppError/AppErrorPage.vue";
-import {storeToRefs} from "pinia";
 import {useErrorStore} from "@/stores/errorStore.ts";
-import {onErrorCaptured} from "vue";
+import {onErrorCaptured, onMounted} from "vue";
 
 const errorStore = useErrorStore();
 
@@ -11,6 +10,9 @@ onErrorCaptured((error) => {
   errorStore.setError({error});
 })
 
+onMounted(async () => {
+
+})
 
 </script>
 

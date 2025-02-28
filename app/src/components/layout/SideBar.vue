@@ -3,6 +3,7 @@ import {Icon} from "@iconify/vue";
 import type {LinkProp} from "@/types/sidebar.linkprop.ts";
 import SideBarLinks from "@/components/layout/SideBarLinks.vue";
 import { Button } from "@/components/ui/button";
+import {useRouter} from "vue-router";
 
 const links: LinkProp[] = [
   {
@@ -37,12 +38,15 @@ const accountLinks: LinkProp[] = [
     title: "Sign out",
     icon: "lucide:log-out"
   },
-]
+];
 
+const router = useRouter();
 async function actionClickedEvent(linkTitle: string){
   if (linkTitle === 'Sign out'){
     const { logout } = await import("@/lib/supabase/supaAuth.ts");
-    await logout();
+    const isLoggedOut = await logout();
+
+    if (isLoggedOut) router.push('/login')
   }
 }
 

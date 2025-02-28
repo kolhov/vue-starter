@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import {useRoute} from "vue-router";
 import {
+  Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow } from "@/components/ui/table";
-import {Avatar} from "@/components/ui/avatar";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {ref, watch} from "vue";
 import {projectQuery} from "@/lib/supabase/supabaseQueries.ts";
 import type {Project} from "@/lib/supabase/supabaseQueryTypes.ts";

@@ -4,10 +4,11 @@ import type {Task} from "@/lib/supabase/supabaseQueryTypes.ts";
 import {usePageStore} from "@/stores/pages.ts";
 import {taskQuery} from "@/lib/supabase/supabaseQueries.ts";
 import {useRoute} from "vue-router";
-import {TableCell, TableHead, TableRow} from "@/components/ui/table";
-import {Avatar} from "@/components/ui/avatar";
+import {Table, TableCell, TableHead, TableRow} from "@/components/ui/table";
+import {Avatar, AvatarImage, AvatarFallback} from "@/components/ui/avatar";
 import {Icon} from "@iconify/vue";
 import {useErrorStore} from "@/stores/errorStore.ts";
+import {Button} from "@/components/ui/button"
 
 const route = useRoute('/tasks/[id]');
 const task = ref<Task | null>(null);

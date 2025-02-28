@@ -3,6 +3,7 @@ import AuthLayout from "@/components/layout/main/AuthLayout.vue";
 import AppErrorPage from "@/components/AppError/AppErrorPage.vue";
 import {useErrorStore} from "@/stores/errorStore.ts";
 import {onErrorCaptured, onMounted} from "vue";
+import {useAuthStore} from "@/stores/authStore.ts";
 
 const errorStore = useErrorStore();
 
@@ -11,7 +12,7 @@ onErrorCaptured((error) => {
 })
 
 onMounted(async () => {
-
+  useAuthStore().trackAuthChanges();
 })
 
 </script>

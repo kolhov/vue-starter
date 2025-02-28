@@ -1,8 +1,5 @@
 import {supabase} from "@/lib/supabase/supabaseClient.ts";
 import type {loginForm, registerForm} from "@/types/auth.types.ts";
-import {useAuthStore} from "@/stores/authStore.ts";
-
-const authStore = useAuthStore();
 
 export async function register(formData: registerForm){
   const { data, error } = await supabase.auth.signUp({
@@ -23,7 +20,6 @@ export async function register(formData: registerForm){
     if (error) return console.log('Profiles err: ', error)
   }
 
-  await authStore.setAuth(data.session);
   return true
 }
 
@@ -35,7 +31,6 @@ export async function login(formData: loginForm){
 
   if(error) return console.log(error)
 
-  await authStore.setAuth(data.session);
   return true
 }
 
@@ -43,6 +38,5 @@ export async function logout(){
   const {error} = await supabase.auth.signOut();
   if(error) return console.log(error)
 
-  await authStore.setAuth();
   return true
 }

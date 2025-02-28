@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Label} from "@/components/ui/label";
-import {Separator} from "@/components/ui/separator"
+import {Separator} from "@/components/ui/separator";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
 import {ref} from "vue";
 import {useRouter} from "vue-router";
 import {login} from "@/lib/supabase/supaAuth.ts";

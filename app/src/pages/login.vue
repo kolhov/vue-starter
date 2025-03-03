@@ -7,7 +7,10 @@ import {Button} from "@/components/ui/button";
 import {ref} from "vue";
 import {useRouter} from "vue-router";
 import {login} from "@/lib/supabase/supaAuth.ts";
+import {useFormErrors} from "@/composables/formErrors.ts";
+import {watchDebounced} from "@vueuse/core";
 
+const { handleServerError, serverError, loginFormValidation, formErrors } = useFormErrors();
 const router = useRouter();
 const formData = ref({
   email: '',
@@ -15,9 +18,18 @@ const formData = ref({
 })
 
 async function signIn(){
-  const isLoggedIn = await login(formData.value)
-  if (isLoggedIn) router.push('/')
+  const {error} = await login(formData.value)
+  if (!error) return  router.push('/')
+
+  handleServerError(error);
 }
+
+watchDebounced(
+  formData,
+  () => {
+    loginFormValidation(formData.value)
+  }, { debounce: 1000, deep: true }
+)
 
 </script>
 
@@ -37,15 +49,40 @@ async function signIn(){
         <form class="grid gap-4" @submit.prevent="signIn">
           <div class="grid gap-2">
             <Label id="email" class="text-left">Email</Label>
-            <Input type="email" placeholder="johndoe19@example.com" required v-model="formData.email" />
+            <Input type="email"
+                   placeholder="johndoe19@example.com"
+                   required
+                   :class="{'border-red-500': serverError}"
+                   v-model="formData.email"
+            />
+            <ul class="text-sm text-left text-red-500" v-if="formErrors?.email.length">
+              <li class="list-disc" v-for="err in formErrors.email" :key="err">
+                {{err}}
+              </li>
+            </ul>
           </div>
           <div class="grid gap-2">
             <div class="flex items-center">
               <Label id="password">Password</Label>
               <a href="#" class="inline-block ml-auto text-xs underline"> Forgot your password? </a>
             </div>
-            <Input id="password" type="password" autocomplete required v-model="formData.password" />
+            <Input id="password"
+                   type="password"
+                   autocomplete
+                   required
+                   :class="{'border-red-500': serverError}"
+                   v-model="formData.password" />
+            <ul class="text-sm text-left text-red-500" v-if="formErrors?.password.length">
+              <li class="list-disc" v-for="err in formErrors.password" :key="err">
+                {{err}}
+              </li>
+            </ul>
           </div>
+          <ul class="text-sm text-left text-red-500" v-if="serverError">
+            <li class="list-disc">
+              {{serverError}}
+            </li>
+          </ul>
           <Button type="submit" class="w-full"> Login </Button>
         </form>
         <div class="mt-4 text-sm text-center">
